@@ -2,23 +2,23 @@ package com.example.demogradlekotlin.controllers
 
 import com.example.demogradlekotlin.domain.Alumno
 import com.example.demogradlekotlin.dto.AlumnoDTO
-import com.example.demogradlekotlin.services.AlumnoService
+import com.example.demogradlekotlin.repositories.AlumnoRepository
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping(value = ["/api/v1/alumnos", "/alumnos"])
-class AlumnoController {
-    var alumnoService: AlumnoService
+@RequestMapping(value = ["/api/v1/alumnos-repository", "/alumnos-repository"])
+class AlumnoRepositoryController {
+    var alumnoRepository: AlumnoRepository
     /*
     * Constructor de la clase AlumnoController
-    * @param alumnoService: AlumnoService
+    * @param alumnoRepository: AlumnoRepository
     */
     @Autowired
-    constructor(alumnoService: AlumnoService){
-        this.alumnoService = alumnoService
+    constructor(alumnoRepository: AlumnoRepository){
+        this.alumnoRepository = alumnoRepository
     }
     /*
 
@@ -28,7 +28,7 @@ class AlumnoController {
      */
     @GetMapping("/")
     fun getAlumnos(): ResponseEntity<List<Alumno>>? {
-        return ResponseEntity.ok(alumnoService.findAll())
+        return ResponseEntity.ok(alumnoRepository.findAll())
     }
     /*
 
@@ -40,13 +40,13 @@ class AlumnoController {
     fun createAlumno(
         @Valid @RequestBody alumnoDTO: AlumnoDTO): ResponseEntity<Alumno>? {
         val alumno = Alumno(alumnoDTO)
-        return ResponseEntity.ok(alumnoService.save(alumno))
+        return ResponseEntity.ok(alumnoRepository.save(alumno))
     }
 
     @GetMapping("/{id}")
     fun getAlumnoById(
         @Valid @PathVariable("id") id: Long): ResponseEntity<Alumno>? {
-        val alummoOptional = alumnoService.findById(id)
+        val alummoOptional = alumnoRepository.findById(id)
         if (alummoOptional.isPresent) {
             return ResponseEntity.ok(alummoOptional.get())
         }else{
@@ -58,13 +58,13 @@ class AlumnoController {
     fun updateAlumno(
         @Valid @PathVariable("id") id: Long,
         @Valid @RequestBody alumnoDTO: AlumnoDTO): ResponseEntity<Alumno>? {
-        val alummoOptional = alumnoService.findById(id)
+        val alummoOptional = alumnoRepository.findById(id)
         if (alummoOptional.isPresent) {
             val alumno = alummoOptional.get()
             alumno.nombre = alumnoDTO.nombre
             alumno.apellidos = alumnoDTO.apellidos
             alumno.edad = alumnoDTO.edad
-            return ResponseEntity.ok(alumnoService.save(alumno))
+            return ResponseEntity.ok(alumnoRepository.save(alumno))
         }
          else{
             return ResponseEntity.notFound().build()
@@ -74,9 +74,9 @@ class AlumnoController {
 
     @DeleteMapping("/{id}")
     fun deleteAlumno(@PathVariable("id") id: Long): ResponseEntity<Alumno>? {
-        val alummoOptional = alumnoService.findById(id)
+        val alummoOptional = alumnoRepository.findById(id)
         if (alummoOptional.isPresent) {
-            this.alumnoService.deleteById(id)
+            this.alumnoRepository.deleteById(id)
             return ResponseEntity.ok(alummoOptional.get())
         }else{
             return ResponseEntity.notFound().build()

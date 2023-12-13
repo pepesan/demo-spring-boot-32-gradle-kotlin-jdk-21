@@ -1,7 +1,6 @@
 package com.example.demogradlekotlin.services
 
 import com.example.demogradlekotlin.domain.Alumno
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -14,7 +13,7 @@ interface AlumnoService {
     fun save(alumno: Alumno): Alumno?
 
     // delete
-    fun delete(id: Long): Optional<Alumno>
+    fun deleteById(id: Long): Optional<Alumno>
     // find by id
     fun findById(id: Long): Optional<Alumno>
 }

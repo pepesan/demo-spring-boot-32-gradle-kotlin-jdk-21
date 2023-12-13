@@ -1,6 +1,5 @@
 package com.example.demogradlekotlin.controllers
 
-import com.example.demogradlekotlin.dto.Persona
 import com.example.demogradlekotlin.dto.Student
 import jakarta.validation.Valid
 import org.springframework.stereotype.Controller

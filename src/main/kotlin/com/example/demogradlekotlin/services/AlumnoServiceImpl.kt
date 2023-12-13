@@ -3,7 +3,6 @@ package com.example.demogradlekotlin.services
 import com.example.demogradlekotlin.domain.Alumno
 import com.example.demogradlekotlin.repositories.AlumnoRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -24,7 +23,7 @@ class AlumnoServiceImpl: AlumnoService {
         return this.alumnoRepository.save(alumno)
     }
 
-    override fun delete(id: Long): Optional<Alumno> {
+    override fun deleteById(id: Long): Optional<Alumno> {
         val alumno = this.alumnoRepository.findById(id)
         this.alumnoRepository.deleteById(id)
         return alumno
