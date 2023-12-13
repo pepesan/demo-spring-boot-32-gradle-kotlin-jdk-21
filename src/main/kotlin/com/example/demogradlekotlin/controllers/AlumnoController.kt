@@ -12,16 +12,30 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping(value = ["/api/v1/alumnos", "/alumnos"])
 class AlumnoController {
     var alumnoService: AlumnoService
+    /*
+    * Constructor de la clase AlumnoController
+    * @param alumnoService: AlumnoService
+    */
     @Autowired
     constructor(alumnoService: AlumnoService){
         this.alumnoService = alumnoService
     }
+    /*
 
+    * Método para obtener todos los alumnos
+    * @return ResponseEntity<List<Alumno>>
+
+     */
     @GetMapping("/")
     fun getAlumnos(): ResponseEntity<List<Alumno>>? {
         return ResponseEntity.ok(alumnoService.findAll())
     }
+    /*
 
+    * Método para crear un nuevo alumno
+    * @param alumnoDTO: AlumnoDTO
+    * @return ResponseEntity<Alumno>?
+     */
     @PostMapping("/")
     fun createAlumno(
         @Valid @RequestBody alumnoDTO: AlumnoDTO): ResponseEntity<Alumno>? {
