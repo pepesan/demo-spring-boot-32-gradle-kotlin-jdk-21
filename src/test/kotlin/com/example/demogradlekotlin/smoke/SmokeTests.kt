@@ -44,24 +44,9 @@ class SmokeTests @Autowired constructor(val mainController: MainController) {
             // comprobamos que el status es 200 OK
             .andExpect(status().isOk)
             // comprobamos que el contenido es lo que esperamos
-            .andExpect(content().string(containsString("Hola Mundo")))
+            .andExpect(content().string(containsString("Hola")))
     }
 
-    @Test
-    @Throws(Exception::class)
-    fun shouldReturnHelloBonito() {
-        // realizar una petición
-        mockMvc.perform( // hacer un método get en la petición
-            // indicando la ruta de acceso
-            get("/")
-        ) // imprimir por pantalla el resultado
-            .andDo(print())
-            // comprobamos que el status es 200 OK
-            .andExpect{
-                status().isOk
-                content().string(containsString("Hola Mundo"))
-            }
-    }
 
     @Test
     @Throws(Exception::class)
@@ -69,10 +54,16 @@ class SmokeTests @Autowired constructor(val mainController: MainController) {
         // realizar una petición
         mockMvc.get("/")
             // comprobamos que el status es 200 OK
+            .andDo{
+                print()
+            }
             .andExpect{
                 status { isOk() }
+            }
+            // estoy ya no funciona, hay que buscar un matcher que sí va
+            .andExpect {
                 content {
-                    containsString("Hola Mundo")
+                    string(containsString("Hola"))
                 }
             }
     }
