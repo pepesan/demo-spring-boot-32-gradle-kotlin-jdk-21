@@ -1,14 +1,22 @@
 package com.example.demogradlekotlin.domain
 
 import com.example.demogradlekotlin.dto.AlumnoDTO
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
+import lombok.AllArgsConstructor
+import lombok.Data
 
-@Entity
+@Data
+@Entity(name = "Alumno")
+@Table(name = "ALUMNO")
+@AllArgsConstructor
+@NamedQueries(
+    NamedQuery(
+        name = "Alumno.searchByNamedQueryName",
+        query = "SELECT a FROM Alumno a WHERE a.nombre = :name"
+    )
+)
 data class Alumno (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +32,11 @@ data class Alumno (
         nombre = alumnoDTO.nombre,
         apellidos = alumnoDTO.apellidos,
         edad = alumnoDTO.edad
+    )
+    constructor() : this(
+        id = 0,
+        nombre = "",
+        apellidos = "",
+        edad = 0
     )
 }

@@ -19,5 +19,4 @@ class Etiqueta {
     // No se agrega la relación inversa en este ejemplo, ya que es unidireccional
     // Getters y setters
 
-
 }

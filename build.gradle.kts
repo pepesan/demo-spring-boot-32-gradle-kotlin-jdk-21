@@ -31,8 +31,13 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+	// implementation("org.flywaydb:flyway-core:10.2.0")
+	// implementation("org.flywaydb:flyway-mysql:10.2.0")
+
 }
 
 tasks.withType<KotlinCompile> {
