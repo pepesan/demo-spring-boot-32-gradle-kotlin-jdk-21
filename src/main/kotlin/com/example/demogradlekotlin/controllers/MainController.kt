@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(value = ["/api/v1/main", "/main"])
+@RequestMapping(value = ["/api/v1/main", "/"])
 class MainController {
     @GetMapping("/")
     fun main(): String {
