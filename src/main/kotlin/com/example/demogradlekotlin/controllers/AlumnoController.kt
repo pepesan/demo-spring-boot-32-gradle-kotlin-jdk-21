@@ -5,6 +5,7 @@ import com.example.demogradlekotlin.dto.AlumnoDTO
 import com.example.demogradlekotlin.services.AlumnoService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.rest.webmvc.ResourceNotFoundException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -46,41 +47,42 @@ class AlumnoController {
     @GetMapping("/{id}")
     fun getAlumnoById(
         @Valid @PathVariable("id") id: Long): ResponseEntity<Alumno>? {
-        val alummoOptional = alumnoService.findById(id)
-        if (alummoOptional.isPresent) {
-            return ResponseEntity.ok(alummoOptional.get())
-        }else{
-            return ResponseEntity.notFound().build()
-        }
+        val alummo = alumnoService.findById(id)
+            .orElseThrow<ResourceNotFoundException> {
+                ResourceNotFoundException(
+                    "Not found with id = $id"
+                )
+            }
+
+        return ResponseEntity.ok(alummo)
     }
 
     @PutMapping("/{id}")
     fun updateAlumno(
         @Valid @PathVariable("id") id: Long,
-        @Valid @RequestBody alumnoDTO: AlumnoDTO): ResponseEntity<Alumno>? {
-        val alummoOptional = alumnoService.findById(id)
-        if (alummoOptional.isPresent) {
-            val alumno = alummoOptional.get()
-            alumno.nombre = alumnoDTO.nombre
-            alumno.apellidos = alumnoDTO.apellidos
-            alumno.edad = alumnoDTO.edad
-            return ResponseEntity.ok(alumnoService.save(alumno))
-        }
-         else{
-            return ResponseEntity.notFound().build()
-        }
-
+        @Valid @RequestBody alumnoDTO: AlumnoDTO): ResponseEntity<Alumno> {
+        val alummo = alumnoService.findById(id)
+            .orElseThrow<ResourceNotFoundException> {
+                ResourceNotFoundException(
+                    "Not found with id = $id"
+                )
+            }
+        alummo.nombre = alumnoDTO.nombre
+        alummo.apellidos = alumnoDTO.apellidos
+        alummo.edad = alumnoDTO.edad
+        return ResponseEntity.ok(alumnoService.save(alummo))
     }
 
     @DeleteMapping("/{id}")
     fun deleteAlumno(@PathVariable("id") id: Long): ResponseEntity<Alumno>? {
-        val alummoOptional = alumnoService.findById(id)
-        if (alummoOptional.isPresent) {
-            this.alumnoService.deleteById(id)
-            return ResponseEntity.ok(alummoOptional.get())
-        }else{
-            return ResponseEntity.notFound().build()
-        }
+        val alummo= alumnoService.findById(id)
+            .orElseThrow<ResourceNotFoundException> {
+                ResourceNotFoundException(
+                    "Not found with id = $id"
+                )
+            }
+        this.alumnoService.deleteById(id)
+        return ResponseEntity.ok(alummo)
     }
 
 
