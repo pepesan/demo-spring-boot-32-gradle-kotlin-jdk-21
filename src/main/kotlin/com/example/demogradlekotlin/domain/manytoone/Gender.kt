@@ -11,14 +11,17 @@ import lombok.NoArgsConstructor
 @AllArgsConstructor
 class Gender {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long? = null
 
     var name: String? = null
 
     @OneToMany(
-        cascade = [CascadeType.PERSIST, CascadeType.MERGE
-        ], fetch = FetchType.EAGER
+        cascade = [
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+        ],
+        fetch = FetchType.EAGER
     )
     @JoinColumn(name = "gender_id", referencedColumnName = "id")
     var books: MutableSet<Book> = mutableSetOf()

@@ -11,16 +11,12 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(value = ["/api/v1/alumnos", "/alumnos"])
-class AlumnoController {
-    var alumnoService: AlumnoService
+class AlumnoController
     /*
     * Constructor de la clase AlumnoController
     * @param alumnoService: AlumnoService
     */
-    @Autowired
-    constructor(alumnoService: AlumnoService){
-        this.alumnoService = alumnoService
-    }
+    @Autowired constructor(var alumnoService: AlumnoService) {
     /*
 
     * Método para obtener todos los alumnos
@@ -44,9 +40,14 @@ class AlumnoController {
         return ResponseEntity.ok(alumnoService.save(alumno))
     }
 
+    /**
+     * Método para obtener un alumno por su ID
+     * @param id: Long
+     * @return ResponseEntity<Alumno>
+     */
     @GetMapping("/{id}")
     fun getAlumnoById(
-        @Valid @PathVariable("id") id: Long): ResponseEntity<Alumno>? {
+        @Valid @PathVariable("id") id: Long): ResponseEntity<Alumno> {
         val alummo = alumnoService.findById(id)
             .orElseThrow<ResourceNotFoundException> {
                 ResourceNotFoundException(
@@ -57,6 +58,12 @@ class AlumnoController {
         return ResponseEntity.ok(alummo)
     }
 
+    /**
+     * Método para actualizar un alumno
+     * @param id: Long
+     * @param alumnoDTO: AlumnoDTO
+     * @return ResponseEntity<Alumno>
+     */
     @PutMapping("/{id}")
     fun updateAlumno(
         @Valid @PathVariable("id") id: Long,
@@ -73,8 +80,13 @@ class AlumnoController {
         return ResponseEntity.ok(alumnoService.save(alummo))
     }
 
+    /**
+     * Método para eliminar un alumno
+     * @param id: Long
+     * @return ResponseEntity<Alumno>
+     */
     @DeleteMapping("/{id}")
-    fun deleteAlumno(@PathVariable("id") id: Long): ResponseEntity<Alumno>? {
+    fun deleteAlumno(@PathVariable("id") id: Long): ResponseEntity<Alumno> {
         val alummo= alumnoService.findById(id)
             .orElseThrow<ResourceNotFoundException> {
                 ResourceNotFoundException(

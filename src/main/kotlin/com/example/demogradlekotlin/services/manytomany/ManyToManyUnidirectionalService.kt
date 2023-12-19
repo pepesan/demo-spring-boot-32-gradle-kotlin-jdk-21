@@ -9,12 +9,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 class ManyToManyUnidirectionalService @Autowired constructor(
-    noticiaRepository: NoticiaRepository,
-    etiquetaRepository: EtiquetaRepository
+    var noticiaRepository: NoticiaRepository,
+    var etiquetaRepository: EtiquetaRepository
 ) {
-    private val noticiaRepository: NoticiaRepository = noticiaRepository
-
-    private val etiquetaRepository: EtiquetaRepository = etiquetaRepository
 
     fun doSomething(): MutableList<Noticia?> {
         val noticia: Noticia = Noticia()

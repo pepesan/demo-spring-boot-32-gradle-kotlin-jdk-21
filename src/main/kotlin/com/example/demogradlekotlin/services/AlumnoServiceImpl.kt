@@ -19,7 +19,7 @@ class AlumnoServiceImpl: AlumnoService {
         return this.alumnoRepository.findAll()
     }
 
-    override fun save(alumno: Alumno): Alumno? {
+    override fun save(alumno: Alumno): Alumno {
         return this.alumnoRepository.save(alumno)
     }
 

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor
 @AllArgsConstructor
 class Phone {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long? = null
 
     @Column(name = "`number`")

@@ -5,6 +5,7 @@ import com.example.demogradlekotlin.dto.AlumnoDTO
 import com.example.demogradlekotlin.repositories.AlumnoRepository
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.rest.webmvc.ResourceNotFoundException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -27,7 +28,7 @@ class AlumnoRepositoryController {
 
      */
     @GetMapping("/")
-    fun getAlumnos(): ResponseEntity<List<Alumno>>? {
+    fun getAlumnos(): ResponseEntity<List<Alumno>> {
         return ResponseEntity.ok(alumnoRepository.findAll())
     }
     /*
@@ -38,49 +39,52 @@ class AlumnoRepositoryController {
      */
     @PostMapping("/")
     fun createAlumno(
-        @Valid @RequestBody alumnoDTO: AlumnoDTO): ResponseEntity<Alumno>? {
+        @Valid @RequestBody alumnoDTO: AlumnoDTO): ResponseEntity<Alumno> {
         val alumno = Alumno(alumnoDTO)
         return ResponseEntity.ok(alumnoRepository.save(alumno))
     }
 
     @GetMapping("/{id}")
     fun getAlumnoById(
-        @Valid @PathVariable("id") id: Long): ResponseEntity<Alumno>? {
-        val alummoOptional = alumnoRepository.findById(id)
-        if (alummoOptional.isPresent) {
-            return ResponseEntity.ok(alummoOptional.get())
-        }else{
-            return ResponseEntity.notFound().build()
-        }
+        @Valid @PathVariable("id") id: Long): ResponseEntity<Alumno> {
+        val alumno = alumnoRepository.findById(id)
+            .orElseThrow<ResourceNotFoundException> {
+                ResourceNotFoundException(
+                    "Not found with id = $id"
+                )
+            }
+
+        return ResponseEntity.ok(alumno)
+
     }
 
     @PutMapping("/{id}")
     fun updateAlumno(
         @Valid @PathVariable("id") id: Long,
         @Valid @RequestBody alumnoDTO: AlumnoDTO): ResponseEntity<Alumno>? {
-        val alummoOptional = alumnoRepository.findById(id)
-        if (alummoOptional.isPresent) {
-            val alumno = alummoOptional.get()
-            alumno.nombre = alumnoDTO.nombre
-            alumno.apellidos = alumnoDTO.apellidos
-            alumno.edad = alumnoDTO.edad
-            return ResponseEntity.ok(alumnoRepository.save(alumno))
-        }
-         else{
-            return ResponseEntity.notFound().build()
-        }
+        val alumno = alumnoRepository.findById(id)
+            .orElseThrow<ResourceNotFoundException> {
+                ResourceNotFoundException(
+                    "Not found with id = $id"
+                )
+            }
 
+        alumno.nombre = alumnoDTO.nombre
+        alumno.apellidos = alumnoDTO.apellidos
+        alumno.edad = alumnoDTO.edad
+        return ResponseEntity.ok(alumnoRepository.save(alumno))
     }
 
     @DeleteMapping("/{id}")
-    fun deleteAlumno(@PathVariable("id") id: Long): ResponseEntity<Alumno>? {
-        val alummoOptional = alumnoRepository.findById(id)
-        if (alummoOptional.isPresent) {
-            this.alumnoRepository.deleteById(id)
-            return ResponseEntity.ok(alummoOptional.get())
-        }else{
-            return ResponseEntity.notFound().build()
-        }
+    fun deleteAlumno(@PathVariable("id") id: Long): ResponseEntity<Alumno> {
+        val alumno = alumnoRepository.findById(id)
+            .orElseThrow<ResourceNotFoundException> {
+                ResourceNotFoundException(
+                    "Not found with id = $id"
+                )
+            }
+        this.alumnoRepository.deleteById(id)
+        return ResponseEntity.ok(alumno)
     }
 
 

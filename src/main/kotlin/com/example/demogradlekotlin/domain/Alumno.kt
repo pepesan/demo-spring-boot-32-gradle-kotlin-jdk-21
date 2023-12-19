@@ -9,7 +9,7 @@ import lombok.Data
 
 @Data
 @Entity(name = "Alumno")
-@Table(name = "ALUMNO")
+@Table(name = "ALUMNOS")
 @AllArgsConstructor
 @NamedQueries(
     NamedQuery(
@@ -23,6 +23,7 @@ data class Alumno (
     var id: Long,
     @Size(min = 3, max = 20, message = "el nombre debe tener mas de 3 letras y menos de 20.")
     var nombre: String,
+    @Column(name= "APELLIDOS")
     var apellidos: String,
     @Min(value = 18, message = "el usuario debe tener 18+")
     var edad: Int
