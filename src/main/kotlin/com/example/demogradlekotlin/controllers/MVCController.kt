@@ -1,5 +1,6 @@
 package com.example.demogradlekotlin.controllers
 
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -8,6 +9,9 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping(value = ["/mvc"])
+@Tag(
+    name = "mvc",
+    description = "MVC API Sample")
 class MVCController {
     // inject via application.properties
     @Value("\${welcome.message}")

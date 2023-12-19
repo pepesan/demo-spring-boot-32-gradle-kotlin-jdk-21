@@ -71,14 +71,18 @@ class APIController {
         value = [ApiResponse(
             responseCode = "200",
             description = "Dato added successfully",
-            content = [Content(mediaType = "application/json", schema = Schema(implementation = Dato::class)), Content(
+            content = [
+                Content(
+                mediaType = "application/json",
+                schema = Schema(implementation = Dato::class)),
+                Content(
                 mediaType = "application/xml",
                 schema = Schema(implementation = Dato::class)
             )]
         )]
     )
     fun addDato(
-        @Parameter(description = "Created user object") @RequestBody dato: @Valid DatoDTO
+        @Parameter(description = "Created user object") @Valid @RequestBody dato: DatoDTO
     ): Dato {
         lastID++
         val d: Dato = Dato()
@@ -112,22 +116,40 @@ class APIController {
     }
 
     @GetMapping("/{id}")
+    @Operation(
+        summary = "show a dato object by id",
+        description = "show a dato object by identifier",
+        tags = ["dato"]
+    )
     @ApiResponses(
-        value = [ApiResponse(
-            responseCode = "200",
-            description = "Successful operation",
-            content = [Content(mediaType = "application/xml", schema = Schema(implementation = Dato::class)), Content(
-                mediaType = "application/json",
-                schema = Schema(implementation = Dato::class)
-            )]
-        ), ApiResponse(
-            responseCode = "404",
-            description = "Invalid input",
-            content = [Content(
-                mediaType = "application/xml",
-                schema = Schema(implementation = ErrorMessage::class)
-            ), Content(mediaType = "application/json", schema = Schema(implementation = ErrorMessage::class))]
-        )]
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successful operation",
+                content = [
+                    Content(
+                        mediaType = "application/xml",
+                        schema = Schema(implementation = Dato::class)),
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = Dato::class))
+                ]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Invalid input",
+                content = [
+                    Content(
+                        mediaType = "application/xml",
+                        schema = Schema(implementation = ErrorMessage::class)
+                    ),
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = ErrorMessage::class)
+                    )
+                ]
+            )
+        ]
     )
     fun showDatoById(@PathVariable("id") id: Long?): ResponseEntity<Dato> {
         val d: Dato? = listado
@@ -150,9 +172,44 @@ class APIController {
     }
 
     @PutMapping(value = ["/{id}"])
+    @Operation(
+        summary = "update a dato object by id",
+        description = "update a dato object by identifier",
+        tags = ["dato"]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successful operation",
+                content = [
+                    Content(
+                        mediaType = "application/xml",
+                        schema = Schema(implementation = Dato::class)),
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = Dato::class))
+                ]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Invalid input",
+                content = [
+                    Content(
+                        mediaType = "application/xml",
+                        schema = Schema(implementation = ErrorMessage::class)
+                    ),
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = ErrorMessage::class)
+                    )
+                ]
+            )
+        ]
+    )
     fun editDatoById(
-        @PathVariable("id") id: Long,
-        @RequestBody datoDTO: DatoDTO
+        @Parameter(description = "id user object") @PathVariable("id") id: Long,
+        @Parameter(description = "updated user object") @Valid @RequestBody datoDTO: DatoDTO
     ): ResponseEntity<Dato> {
         val d: Dato? = listado.stream().filter { elemento: Dato? ->
             elemento?.id == id
@@ -197,21 +254,40 @@ class APIController {
     //        );
     //    }
     @DeleteMapping(value = ["/{id}"])
+    @Operation(
+        summary = "delete a dato object by id",
+        description = "delete a dato object by identifier",
+        tags = ["dato"]
+    )
+
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "200",
             description = "Successful operation",
-            content = [Content(mediaType = "application/xml", schema = Schema(implementation = Dato::class)), Content(
-                mediaType = "application/json",
-                schema = Schema(implementation = Dato::class)
-            )]
-        ), ApiResponse(
+            content = [
+                Content(
+                    mediaType = "application/xml",
+                    schema = Schema(implementation = Dato::class)
+                ),
+                Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = Dato::class)
+                )
+            ]
+        ),
+        ApiResponse(
             responseCode = "404",
             description = "Object not found",
-            content = [Content(
-                mediaType = "application/xml",
-                schema = Schema(implementation = ErrorMessage::class)
-            ), Content(mediaType = "application/json", schema = Schema(implementation = ErrorMessage::class))]
+            content = [
+                Content(
+                    mediaType = "application/xml",
+                    schema = Schema(implementation = ErrorMessage::class)
+                ),
+                Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ErrorMessage::class)
+                )
+            ]
         )]
     )
     fun deleteDatoById(@PathVariable id: Long): ResponseEntity<Dato> {
